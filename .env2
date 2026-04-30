@@ -1,0 +1,12 @@
+DIGEMID_URL=https://www.digemid.minsa.gob.pe/webDigemid/alertas/
+
+SMTP_HOST=smtp.office365.com
+SMTP_PORT=587
+SMTP_USER=ietsi.gpc9@essalud.gob.pe
+SMTP_PASS=Essalud.2025**
+
+MAIL_FROM=ietsi.gpc9@essalud.gob.pe
+MAIL_TO=ietsi.gpc9@essalud.gob.pe
+
+STATE_FILE=digemid_state.json
+INIT_NOTIFY=1

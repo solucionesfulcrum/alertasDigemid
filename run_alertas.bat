@@ -1,0 +1,3 @@
+@echo off
+cd /d "D:\KEVIN ARIAS\ALERTAS DIGEMID"
+py "D:\KEVIN ARIAS\ALERTAS DIGEMID\alertas.py" >> "D:\KEVIN ARIAS\ALERTAS DIGEMID\alertas.log" 2>&1
