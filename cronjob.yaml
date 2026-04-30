@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: digemid-alertas
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: digemid
+              image: localhost/digemid-alertas:1.0
+
+              env:
+                - name: DIGEMID_URL
+                  value: "https://www.digemid.minsa.gob.pe/webDigemid/alertas/"
+                - name: MAIL_FROM
+                  value: "ietsi.gpc9@essalud.gob.pe"
+                - name: MAIL_TO
+                  value: "ietsi.gpc9@essalud.gob.pe,miguel.huamani@essalud.gob.pe,alderetecarhuasjanethjuly@gmail.com"
+                - name: STATE_FILE
+                  value: "digemid_state.json"
+                - name: INIT_NOTIFY
+                  value: "0"
+
+              envFrom:
+                - secretRef:
+                    name: digemid-secret
+
+          restartPolicy: OnFailure
