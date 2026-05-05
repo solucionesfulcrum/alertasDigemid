@@ -11,6 +11,7 @@ spec:
           containers:
             - name: digemid
               image: localhost/digemid-alertas:1.0
+              imagePullPolicy: Never
 
               env:
                 - name: DIGEMID_URL
@@ -20,12 +21,22 @@ spec:
                 - name: MAIL_TO
                   value: "ietsi.gpc9@essalud.gob.pe,miguel.huamani@essalud.gob.pe,alderetecarhuasjanethjuly@gmail.com"
                 - name: STATE_FILE
-                  value: "digemid_state.json"
+                  value: "/data/digemid_state.json"
                 - name: INIT_NOTIFY
                   value: "0"
 
               envFrom:
                 - secretRef:
                     name: digemid-secret
+
+              volumeMounts:
+                - name: digemid-state
+                  mountPath: /data
+
+          volumes:
+            - name: digemid-state
+              hostPath:
+                path: /opt/digemid-alertas
+                type: DirectoryOrCreate
 
           restartPolicy: OnFailure
