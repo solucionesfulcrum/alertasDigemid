@@ -328,8 +328,7 @@ def main():
     
         print(f"[OK] Enviados {sent} correos (1 por cada alerta nueva).")
     else:
-        # Guarda estado (por si cambió orden o se quiere registrar last_check)
-        state["known_links"] = list(known_links.union({a["link"] for a in alerts}))
+        # No agregar links nuevos aquí, porque podría marcar alertas como conocidas sin enviarlas.
         save_state(state_file, state)
         print("[OK] Sin nuevas alertas.")
 
