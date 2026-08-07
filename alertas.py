@@ -298,12 +298,9 @@ def main():
         return
 
     if new_alerts:
-        # Importante: guardar estado primero para evitar duplicados si el envío falla a mitad
-        state["known_links"] = list(known_links.union({a["link"] for a in new_alerts}))
-        save_state(state_file, state)
-
-        # (Opcional) orden: normalmente lo más nuevo aparece primero, pero igual iteramos en orden
         sent = 0
+        sent_links = set()
+    
         for a in new_alerts:
             subject = f"[DIGEMID] {a.get('title','Nueva alerta')}"
             text_fallback = (
@@ -313,9 +310,22 @@ def main():
                 f"{a.get('summary','')}"
             )
             html = build_html_ietsi(a)
-            send_email_html(subject, text_fallback, html)
-            sent += 1
-
+    
+            try:
+                send_email_html(subject, text_fallback, html)
+    
+                sent += 1
+                sent_links.add(a["link"])
+    
+                # Se guarda solo después de enviar correctamente
+                state["known_links"] = list(known_links.union(sent_links))
+                save_state(state_file, state)
+    
+            except Exception as e:
+                print(f"[ERROR] No se pudo enviar alerta: {a.get('link')}")
+                print(f"[ERROR] {e}")
+                raise
+    
         print(f"[OK] Enviados {sent} correos (1 por cada alerta nueva).")
     else:
         # Guarda estado (por si cambió orden o se quiere registrar last_check)
