@@ -2,25 +2,3 @@
 digemid-alertas.tar
 *.tar
 
-# Variables de entorno / secretos
-.env
-.env2
-secret.yaml
-
-# Logs y estado local
-alertas.log
-digemid_state.json
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.venv/
-venv/
-
-# Sistema / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
