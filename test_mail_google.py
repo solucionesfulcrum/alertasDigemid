@@ -5,7 +5,7 @@ smtp_server = "smtp.gmail.com"
 port = 587
 
 sender_email = "Kevinariassistemas@gmail.com"
-password = "muxmnskspkdeqnym"
+password = "iajlvenhztdqmswt"
 
 receiver_email = "ietsi.gpc9@essalud.gob.pe"
 

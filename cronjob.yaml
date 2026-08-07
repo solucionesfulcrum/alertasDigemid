@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
             - name: digemid
-              image: localhost/digemid-alertas:1.0
+              image: localhost/digemid-alertas:1.1
               imagePullPolicy: Never
 
               env:
