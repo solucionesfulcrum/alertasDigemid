@@ -287,7 +287,7 @@ def send_email_html(subject: str, text_fallback: str, html: str) -> None:
             server.login(user, password)
             server.send_message(msg)
     else:
-        with smtplib.SMTP(host, port) as server:
+        with SMTPIPv4(host, port, timeout=30) as server:
             server.ehlo()
             server.starttls(context=ssl.create_default_context())
             server.ehlo()
