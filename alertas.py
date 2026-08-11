@@ -3,6 +3,7 @@ import re
 import json
 import ssl
 import smtplib
+import socket
 from datetime import datetime
 from email.message import EmailMessage
 from urllib.parse import urljoin
@@ -241,6 +242,24 @@ def fetch_alerts(url: str, timeout: int = 30) -> list[dict]:
         unique.append(al)
 
     return unique
+    
+class SMTPIPv4(smtplib.SMTP):
+    def _get_socket(self, host, port, timeout):
+        addrs = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)
+        last_error = None
+
+        for family, socktype, proto, canonname, sockaddr in addrs:
+            sock = socket.socket(family, socktype, proto)
+            try:
+                if timeout is not None:
+                    sock.settimeout(timeout)
+                sock.connect(sockaddr)
+                return sock
+            except OSError as e:
+                last_error = e
+                sock.close()
+
+        raise last_error
 
 def send_email_html(subject: str, text_fallback: str, html: str) -> None:
     host = os.environ["SMTP_HOST"]
@@ -264,7 +283,7 @@ def send_email_html(subject: str, text_fallback: str, html: str) -> None:
 
     if port == 465:
         context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(host, port, context=context) as server:
+        with SMTPIPv4(host, port, timeout=30) as server:
             server.login(user, password)
             server.send_message(msg)
     else:
